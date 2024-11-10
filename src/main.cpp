@@ -68,13 +68,14 @@ int main() {
     Renderer renderer(window);
 
     const float constraint_radius = simulator.getConstraintRadius();
-    float constraint_area = M_PI * (constraint_radius*constraint_radius);
+    const float constraint_area = M_PI * (constraint_radius*constraint_radius);
+    float curr_constraint_area = constraint_area;
     bool add_new_verlets = true;
 
-    const float object_spawn_delay = 0.17f;
+    const float object_spawn_delay = 0.1f;
     sf::Clock clock;
     const float dt = 1.0f / 60.0f;
-    
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -87,11 +88,11 @@ int main() {
             verletObject new_verlet = generateNewVerlet();
             const float new_verlet_radius = new_verlet.getRadius();
             const float new_verlet_area = M_PI * (new_verlet_radius*new_verlet_radius);
-            if (constraint_area - new_verlet_area <= 400.0f) {
+            if (curr_constraint_area - new_verlet_area <= constraint_area/3.0f) {
                 add_new_verlets = false;
             }
             else {
-                constraint_area -= new_verlet_area;
+                curr_constraint_area -= new_verlet_area;
                 simulator.addVerlet(new_verlet);
             }
         }
