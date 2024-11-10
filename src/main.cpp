@@ -17,7 +17,7 @@ std::array<sf::Color, 6> COLORS = {
 };
 
 
-std::array<float, 7> SIZES = {2.5f, 3.5f, 5.0f, 8.0f, 12.0f, 15.0f, 22.0f};
+std::array<float, 8> SIZES = {2.0f, 3.5f, 5.0f, 8.0f, 12.0f, 15.0f, 22.0f, 29.0f};
 float x_init_velo = -3.0f;
 int STATE = 0;
 int L_TO_R = 0;
@@ -29,7 +29,7 @@ verletObject generateNewVerlet(){
     std::mt19937 gen(nanoseconds); // Mersenne Twister engine
     std::uniform_int_distribution<int> col(0, 5); // Range: 0 to 5 inclusive
     sf::Color color = COLORS[col(gen)];
-    std::uniform_int_distribution<int> dist(0, 6);
+    std::uniform_int_distribution<int> dist(0, 7);
     float size = SIZES[dist(gen)];
     
     if (x_init_velo >= 3.0f) {
@@ -45,7 +45,7 @@ verletObject generateNewVerlet(){
         x_init_velo -= 0.2;
     }
 
-    return verletObject(sf::Vector2f(500.0f, 200.0f), size, color, sf::Vector2f(x_init_velo, 3.0f));
+    return verletObject(sf::Vector2f(500.0f, 100.0f), size, color, sf::Vector2f(x_init_velo, 3.0f));
 }
 
 int main() {
