@@ -23,10 +23,12 @@ int main() {
     // -------------------WINDOW SETUP: End-------------------
 
     // -------------------OBJECT CREATION: Begin-------------------
-    verletObject testVerlet(sf::Vector2f(500.0f, 200.0f));
+    verletObject testVerlet(sf::Vector2f(200.0f, 200.0f), 10.0f);
     verlet_solver simulator;
     simulator.addVerlet(testVerlet);
     Renderer renderer(window);
+    const float object_spawn_delay = 0.2f;
+    sf::Clock clock;
     // -------------------OBJECT CREATION: End-------------------
 
     const float dt = 1.0f / 60.0f;
@@ -38,10 +40,16 @@ int main() {
                 window.close();
             }
         }
+        if (clock.getElapsedTime().asSeconds() >= object_spawn_delay) {
+            clock.restart();
+            verletObject testVerlet2(sf::Vector2f(200.0f, 200.0f), 10.0f);
+            simulator.addVerlet(testVerlet2);
+        }
+
         
         simulator.update(dt);
         window.clear(sf::Color::Black);
-        renderer.render(simulator.getVerletObjectAt(0));
+        renderer.render(simulator);
         window.display();
     }
     return 0;
