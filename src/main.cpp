@@ -17,7 +17,7 @@ std::array<sf::Color, 6> COLORS = {
 };
 
 
-std::array<float, 8> SIZES = {2.0f, 3.5f, 5.0f, 8.0f, 12.0f, 15.0f, 22.0f, 29.0f};
+std::array<float, 6> SIZES = {5.0f, 8.0f, 12.0f, 15.0f, 22.0f, 29.0f};
 float x_init_velo = -3.0f;
 int STATE = 0;
 int L_TO_R = 0;
@@ -29,7 +29,7 @@ verletObject generateNewVerlet(){
     std::mt19937 gen(nanoseconds); // Mersenne Twister engine
     std::uniform_int_distribution<int> col(0, 5); // Range: 0 to 5 inclusive
     sf::Color color = COLORS[col(gen)];
-    std::uniform_int_distribution<int> dist(0, 7);
+    std::uniform_int_distribution<int> dist(0, 5);
     float size = SIZES[dist(gen)];
     
     if (x_init_velo >= 3.0f) {
@@ -67,6 +67,10 @@ int main() {
     verlet_solver simulator;
     Renderer renderer(window);
 
+    const float constraint_radius = simulator.getConstraintRadius();
+    float constraint_area = M_PI * (constraint_radius*constraint_radius);
+    bool add_new_verlets = true;
+
     const float object_spawn_delay = 0.17f;
     sf::Clock clock;
     const float dt = 1.0f / 60.0f;
@@ -78,10 +82,18 @@ int main() {
                 window.close();
             }
         }
-        if (clock.getElapsedTime().asSeconds() >= object_spawn_delay) {
+        if (add_new_verlets && clock.getElapsedTime().asSeconds() >= object_spawn_delay) {
             clock.restart();
             verletObject new_verlet = generateNewVerlet();
-            simulator.addVerlet(new_verlet);
+            const float new_verlet_radius = new_verlet.getRadius();
+            const float new_verlet_area = M_PI * (new_verlet_radius*new_verlet_radius);
+            if (constraint_area - new_verlet_area <= 400.0f) {
+                add_new_verlets = false;
+            }
+            else {
+                constraint_area -= new_verlet_area;
+                simulator.addVerlet(new_verlet);
+            }
         }
         
         simulator.update(dt);
