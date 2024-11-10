@@ -10,11 +10,13 @@ struct verletObject {
     sf::Vector2f last_position; 
     sf::Vector2f acceleration;
     float radius;
+    sf::Color color;
 
-    verletObject(sf::Vector2f position_, float radius_):
+    verletObject(sf::Vector2f position_, float radius_, sf::Color color_, sf::Vector2f init_velocity = sf::Vector2f(0.f, 0.f)):
         current_position(position_),
-        last_position(position_),
+        last_position(position_ - init_velocity),
         radius(radius_),
+        color(color_),
         acceleration(0.f, 0.f) {}
 
     // updates object position based on dt using verlet integration
@@ -35,6 +37,10 @@ struct verletObject {
     float getRadius() {
         return radius;
     }
+
+    sf::Color getColor(){
+        return color;
+    }
 };
 
 class verlet_solver {
@@ -45,7 +51,7 @@ class verlet_solver {
         }
 
         void update(float dt) {
-            const int substeps = 2;
+            const int substeps = 8;
             const float sub_dt = dt/(static_cast<float>(substeps));
             for (int i = substeps; i > 0; i--){
                 applyGravity();
@@ -135,6 +141,10 @@ class verlet_solver {
             constraints.push_back(constraint_position.y);
             constraints.push_back(constraint_radius);
             return constraints;
+        }
+
+        float getConstraintRadius(){
+            return constraint_radius;
         }
         
 
