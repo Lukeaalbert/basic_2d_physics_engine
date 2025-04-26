@@ -12,8 +12,7 @@ The physics engine supports rendering visual elements to observe real-time inter
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo-link.git
-   cd your-repo-name
+   git clone https://github.com/Lukeaalbert/basic_2d_physics_engine.git
    ```
 2. Install SFML if not already installed.
 3. Compile the project:
