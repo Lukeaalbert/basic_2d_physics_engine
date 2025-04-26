@@ -17,7 +17,7 @@ std::array<sf::Color, 6> COLORS = {
 };
 
 
-std::array<float, 6> SIZES = {5.0f, 8.0f, 12.0f, 15.0f, 22.0f, 29.0f};
+std::array<float, 6> SIZES = {5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f};
 float x_init_velo = -3.0f;
 int STATE = 0;
 int L_TO_R = 0;
@@ -72,7 +72,7 @@ int main() {
     float curr_constraint_area = constraint_area;
     bool add_new_verlets = true;
 
-    const float object_spawn_delay = 0.1f;
+    const float object_spawn_delay = 0.05f;
     sf::Clock clock;
     const float dt = 1.0f / 60.0f;
 
