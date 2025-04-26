@@ -14,12 +14,15 @@ The physics engine supports rendering visual elements to observe real-time inter
    ```sh
    git clone https://github.com/Lukeaalbert/basic_2d_physics_engine.git
    ```
-2. Install SFML if not already installed.
-3. Compile the project:
+2. Install SFML 2.6.1 if not already installed.
+3. Compile with CMake:
    ```sh
-   g++ main.cpp -o physics_engine -lsfml-graphics -lsfml-window -lsfml-system
+   mkdir build
+   cd build
+   cmake ..
+   make
    ```
 4. Run the program:
    ```sh
-   ./physics_engine
+   ./simulator
    ```
